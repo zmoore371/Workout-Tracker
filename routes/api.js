@@ -56,6 +56,24 @@ router.post("/api/workouts", (req, res) => {
     })
 })
 
+router.put("/api/workouts/:id", (req, res) => {
+    db.Workout.findOneAndUpdate(
+        {
+            _id: req.params.id
+        },
+        {
+            $push: {exercises: req.body}
+        },
+        (e, data) => {
+            if(e){
+                console.log(e)
+            } else{
+                console.log(data)
+                res.json(data)
+            }
+        }
+    )
+})
 
 
 
