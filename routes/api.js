@@ -34,7 +34,7 @@ router.get("/api/workouts/range", (req, res) => {
         },
         //change this number to change ammount of data displayed on stats page
         {
-            "$limit": 10
+            "$limit": 7
         }
     ])
     .then((workout) => {
