@@ -1,19 +1,6 @@
 const router = require("express").Router();
 const db = require("../models");
 
-
-// get workouts
-// router.get("/api/workouts", (req, res) => {
-//     db.Workout.find({}, (err, data) => {
-//         if(err) {
-//             console.log(err)
-//         } else {
-//             res.json(data)
-//             console.log("--------",)  
-//         }
-//     })
-// })
-
 router.get("/api/workouts", (req, res) => {
     db.Workout.aggregate([
         {
@@ -24,15 +11,39 @@ router.get("/api/workouts", (req, res) => {
             },
         },
     ])
-        .then((workout) => {
-            // console.log(workout);
-            res.json(workout)
-        })
-        .catch((e) => {
-            res.json(e)
-        })
+    .then((workout) => {
+        res.json(workout)
+    })
+    .catch((e) => {
+        res.json(e)
+    })
     
 });
+
+router.get("/api/workouts/range", (req, res) => { 
+    db.Workout.aggregate([
+       {
+           $addFields: {
+                totalDuration: {
+                    $sum: "$exercises.duration"
+                }
+           }    
+        },
+        {
+            "$sort": { day: -1}
+        },
+        //change this number to change ammount of data displayed on stats page
+        {
+            "$limit": 10
+        }
+    ])
+    .then((workout) => {
+        res.json(workout)
+    })
+    .catch((e) => {
+        res.json(e)
+    })
+})
 
 
 
