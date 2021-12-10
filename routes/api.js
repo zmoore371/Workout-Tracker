@@ -1,14 +1,26 @@
 const router = require("express").Router();
-// const Workout = require("../models/workout.js");
 const db = require("../models");
+// const Workout = require("../models/workout.js")
 
-//get workouts
+
+
+
+
+// get workouts
 router.get("/api/workouts", (req, res) => {
-    db.Workout.find({}).then(data => {
-        console.log("---------");
-        console.log(data);
+    db.Workout.find({}, (err, data) => {
+        if(err) {
+            console.log(err)
+        } else {
+            res.json(data)
+            console.log("--------",)  
+        }
     })
 })
+
+
+
+
 
 
 module.exports = router;
